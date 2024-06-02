@@ -158,7 +158,7 @@ export default function Home() {
               <Image width={32} height={32} src="/image/down.svg" alt="" />
 
               <div className={styles['txt']}>
-                <div className={styles['txt1']}>
+                <div className={styles['txt3']}>
                   4.3%
                 </div>
                 <div className={styles['txt2']}>
