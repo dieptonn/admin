@@ -209,15 +209,15 @@ export default function Home() {
               margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="colorX01" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#51FA35" stopOpacity={0.8} />
+                  <stop offset="5%" stopColor="#51FA35" stopOpacity={1} />
                   <stop offset="95%" stopColor="#51FA35" stopOpacity={0} />
                 </linearGradient>
                 <linearGradient id="colorX02" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#ED32F1" stopOpacity={0.8} />
+                  <stop offset="5%" stopColor="#ED32F1" stopOpacity={1} />
                   <stop offset="95%" stopColor="#ED32F1" stopOpacity={0} />
                 </linearGradient>
                 <linearGradient id="colorX03" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#00F0FF" stopOpacity={0.8} />
+                  <stop offset="5%" stopColor="#00F0FF" stopOpacity={1} />
                   <stop offset="95%" stopColor="#00F0FF" stopOpacity={0} />
                 </linearGradient>
               </defs>
@@ -237,15 +237,15 @@ export default function Home() {
               margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="colorX01" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#51FA35" stopOpacity={0.6} />
+                  <stop offset="5%" stopColor="#51FA35" stopOpacity={0.9} />
                   {/* <stop offset="95%" stopColor="#51FA35" stopOpacity={0} /> */}
                 </linearGradient>
                 <linearGradient id="colorX02" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#ED32F1" stopOpacity={0.6} />
+                  <stop offset="5%" stopColor="#ED32F1" stopOpacity={0.9} />
                   {/* <stop offset="95%" stopColor="#ED32F1" stopOpacity={0} /> */}
                 </linearGradient>
                 <linearGradient id="colorX03" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#00F0FF" stopOpacity={0.6} />
+                  <stop offset="5%" stopColor="#00F0FF" stopOpacity={0.9} />
                   {/* <stop offset="95%" stopColor="#00F0FF" stopOpacity={0} /> */}
                 </linearGradient>
               </defs>
