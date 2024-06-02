@@ -22,6 +22,7 @@ export default function Home() {
 
 
   const [chartType, setChartType] = useState<'line' | 'area' | 'bar'>('area');
+  const [startIndex, setStartIndex] = useState(0);
 
   const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     message.info('Click on left button.');
@@ -59,15 +60,41 @@ export default function Home() {
 
 
   const data: Data[] = [
-    { name: 'Chuyến 5 giờ', X01: 40, X02: 24, X03: 20 },
-    { name: 'Chuyến 6 giờ', X01: 30, X02: 13, X03: 21 },
-    { name: 'Chuyến 7 giờ', X01: 20, X02: 9, X03: 29 },
-    { name: 'Chuyến 8 giờ', X01: 27, X02: 39, X03: 20 },
-    { name: 'Chuyến 9 giờ', X01: 18, X02: 48, X03: 21 },
-    { name: 'Chuyến 10 giờ', X01: 23, X02: 38, X03: 25 },
-    { name: 'Chuyến 11 giờ', X01: 34, X02: 43, X03: 21 }
+    { name: '5:00', X01: 40, X02: 24, X03: 20 },
+    { name: '6:00', X01: 30, X02: 13, X03: 21 },
+    { name: '7:00', X01: 20, X02: 9, X03: 29 },
+    { name: '8:00', X01: 27, X02: 39, X03: 20 },
+    { name: '9:00', X01: 18, X02: 48, X03: 21 },
+    { name: '10:00', X01: 23, X02: 38, X03: 25 },
+    { name: '11:00', X01: 34, X02: 43, X03: 21 },
+    { name: '12:00', X01: 40, X02: 24, X03: 20 },
+    { name: '13:00', X01: 30, X02: 13, X03: 21 },
+
+    { name: '14:00', X01: 20, X02: 9, X03: 29 },
+    { name: '15:00', X01: 27, X02: 39, X03: 20 },
+    { name: '16:00', X01: 18, X02: 48, X03: 21 },
+    { name: '17:00', X01: 40, X02: 24, X03: 20 },
+    { name: '18:00', X01: 30, X02: 13, X03: 21 },
+    { name: '19:00', X01: 20, X02: 9, X03: 29 },
+    { name: '20:00', X01: 27, X02: 39, X03: 20 },
+    { name: '21:00', X01: 18, X02: 48, X03: 21 },
+    { name: '22:00', X01: 23, X02: 38, X03: 25 },
   ];
 
+  const itemsPerPage = 9;
+  const visibleData = data.slice(startIndex, startIndex + itemsPerPage);
+
+  const handlePrevClick = () => {
+    if (startIndex > 0) {
+      setStartIndex(startIndex - itemsPerPage);
+    }
+  };
+
+  const handleNextClick = () => {
+    if (startIndex + itemsPerPage < data.length) {
+      setStartIndex(startIndex + itemsPerPage);
+    }
+  };
 
   return (
     <div className={styles['main']}>
@@ -178,7 +205,7 @@ export default function Home() {
           </div>
           {chartType === 'area' && (
             <ResponsiveContainer width="100%" aspect={3.55}>
-              <AreaChart data={data}
+              <AreaChart data={visibleData}
                 margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorX01" x1="0" y1="0" x2="0" y2="1">
@@ -208,7 +235,7 @@ export default function Home() {
 
           {chartType === 'line' && (
             <ResponsiveContainer width="100%" aspect={3.55}>
-              <LineChart width={1630} height={450} data={data}
+              <LineChart data={visibleData}
                 margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorX01" x1="0" y1="0" x2="0" y2="1">
@@ -238,7 +265,7 @@ export default function Home() {
 
           {chartType === 'bar' && (
             <ResponsiveContainer width="100%" aspect={3.55}>
-              <BarChart width={1630} height={450} data={data}
+              <BarChart data={visibleData}
                 margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorX01" x1="0" y1="0" x2="0" y2="1">
@@ -265,6 +292,16 @@ export default function Home() {
               </BarChart>
             </ResponsiveContainer>
           )}
+
+          <div className={styles['btn']}>
+            <button onClick={handlePrevClick} disabled={startIndex === 0}>
+              <Image width={32} height={32} src="/image/pre.svg" alt="Previous" />
+            </button>
+            <button onClick={handleNextClick} disabled={startIndex + itemsPerPage >= data.length}>
+              <Image width={32} height={32} src="/image/next.svg" alt="Next" />
+            </button>
+          </div>
+
         </div>
       </div>
     </div>
