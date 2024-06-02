@@ -1,7 +1,7 @@
 'use client'
 import styles from './styles.module.scss'
 import Image from 'next/image'
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, AreaChart, Area, BarChart, Bar } from 'recharts';
+import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, AreaChart, Area, BarChart, Bar } from 'recharts';
 import React, { useState } from 'react';
 import { DownOutlined, UserOutlined, BarChartOutlined, LineChartOutlined, AreaChartOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
@@ -177,87 +177,93 @@ export default function Home() {
             </div>
           </div>
           {chartType === 'area' && (
-            <AreaChart width={1630} height={450} data={data}
-              margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-              <defs>
-                <linearGradient id="colorX01" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#51FA35" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#51FA35" stopOpacity={0} />
-                </linearGradient>
-                <linearGradient id="colorX02" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#ED32F1" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#ED32F1" stopOpacity={0} />
-                </linearGradient>
-                <linearGradient id="colorX03" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#00F0FF" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#00F0FF" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <XAxis dataKey="name" />
-              <YAxis />
-              <CartesianGrid strokeDasharray="0 2" />
-              <Tooltip />
-              <Area type="monotone" dataKey="X01" stroke="#51FA35" fillOpacity={1} fill="url(#colorX01)" />
-              <Area type="monotone" dataKey="X02" stroke="#ED32F1" fillOpacity={1} fill="url(#colorX02)" />
-              <Area type="monotone" dataKey="X03" stroke="#00F0FF" fillOpacity={1} fill="url(#colorX03)" />
+            <ResponsiveContainer width="100%" aspect={3.55}>
+              <AreaChart data={data}
+                margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="colorX01" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#51FA35" stopOpacity={0.8} />
+                    <stop offset="95%" stopColor="#51FA35" stopOpacity={0} />
+                  </linearGradient>
+                  <linearGradient id="colorX02" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#ED32F1" stopOpacity={0.8} />
+                    <stop offset="95%" stopColor="#ED32F1" stopOpacity={0} />
+                  </linearGradient>
+                  <linearGradient id="colorX03" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#00F0FF" stopOpacity={0.8} />
+                    <stop offset="95%" stopColor="#00F0FF" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <XAxis dataKey="name" />
+                <YAxis />
+                <CartesianGrid strokeDasharray="0 2" />
+                <Tooltip />
+                <Area type="monotone" dataKey="X01" stroke="#51FA35" fillOpacity={1} fill="url(#colorX01)" />
+                <Area type="monotone" dataKey="X02" stroke="#ED32F1" fillOpacity={1} fill="url(#colorX02)" />
+                <Area type="monotone" dataKey="X03" stroke="#00F0FF" fillOpacity={1} fill="url(#colorX03)" />
 
-            </AreaChart>
+              </AreaChart>
+            </ResponsiveContainer>
           )}
 
           {chartType === 'line' && (
-            <LineChart width={1630} height={450} data={data}
-              margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-              <defs>
-                <linearGradient id="colorX01" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#51FA35" stopOpacity={1} />
-                  <stop offset="95%" stopColor="#51FA35" stopOpacity={0} />
-                </linearGradient>
-                <linearGradient id="colorX02" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#ED32F1" stopOpacity={1} />
-                  <stop offset="95%" stopColor="#ED32F1" stopOpacity={0} />
-                </linearGradient>
-                <linearGradient id="colorX03" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#00F0FF" stopOpacity={1} />
-                  <stop offset="95%" stopColor="#00F0FF" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <XAxis dataKey="name" />
-              <YAxis />
-              <CartesianGrid strokeDasharray="0 2" />
-              <Tooltip />
-              <Line type="monotone" dataKey="X01" stroke="#51FA35" fillOpacity={1} fill="url(#colorX01)" />
-              <Line type="monotone" dataKey="X02" stroke="#ED32F1" fillOpacity={1} fill="url(#colorX02)" />
-              <Line type="monotone" dataKey="X03" stroke="#00F0FF" fillOpacity={1} fill="url(#colorX03)" />
+            <ResponsiveContainer width="100%" aspect={3.55}>
+              <LineChart width={1630} height={450} data={data}
+                margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="colorX01" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#51FA35" stopOpacity={1} />
+                    <stop offset="95%" stopColor="#51FA35" stopOpacity={0} />
+                  </linearGradient>
+                  <linearGradient id="colorX02" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#ED32F1" stopOpacity={1} />
+                    <stop offset="95%" stopColor="#ED32F1" stopOpacity={0} />
+                  </linearGradient>
+                  <linearGradient id="colorX03" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#00F0FF" stopOpacity={1} />
+                    <stop offset="95%" stopColor="#00F0FF" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <XAxis dataKey="name" />
+                <YAxis />
+                <CartesianGrid strokeDasharray="0 2" />
+                <Tooltip />
+                <Line type="monotone" dataKey="X01" stroke="#51FA35" fillOpacity={1} fill="url(#colorX01)" />
+                <Line type="monotone" dataKey="X02" stroke="#ED32F1" fillOpacity={1} fill="url(#colorX02)" />
+                <Line type="monotone" dataKey="X03" stroke="#00F0FF" fillOpacity={1} fill="url(#colorX03)" />
 
-            </LineChart>
+              </LineChart>
+            </ResponsiveContainer>
           )}
 
           {chartType === 'bar' && (
-            <BarChart width={1630} height={450} data={data}
-              margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-              <defs>
-                <linearGradient id="colorX01" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#51FA35" stopOpacity={0.9} />
-                  {/* <stop offset="95%" stopColor="#51FA35" stopOpacity={0} /> */}
-                </linearGradient>
-                <linearGradient id="colorX02" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#ED32F1" stopOpacity={0.9} />
-                  {/* <stop offset="95%" stopColor="#ED32F1" stopOpacity={0} /> */}
-                </linearGradient>
-                <linearGradient id="colorX03" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#00F0FF" stopOpacity={0.9} />
-                  {/* <stop offset="95%" stopColor="#00F0FF" stopOpacity={0} /> */}
-                </linearGradient>
-              </defs>
-              <XAxis dataKey="name" />
-              <YAxis />
-              <CartesianGrid strokeDasharray="0 3" />
-              <Tooltip />
-              <Bar type="monotone" dataKey="X01" stroke="#51FA35" fillOpacity={1} fill="url(#colorX01)" />
-              <Bar type="monotone" dataKey="X02" stroke="#ED32F1" fillOpacity={1} fill="url(#colorX02)" />
-              <Bar type="monotone" dataKey="X03" stroke="#00F0FF" fillOpacity={1} fill="url(#colorX03)" />
+            <ResponsiveContainer width="100%" aspect={3.55}>
+              <BarChart width={1630} height={450} data={data}
+                margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="colorX01" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#51FA35" stopOpacity={0.9} />
+                    {/* <stop offset="95%" stopColor="#51FA35" stopOpacity={0} /> */}
+                  </linearGradient>
+                  <linearGradient id="colorX02" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#ED32F1" stopOpacity={0.9} />
+                    {/* <stop offset="95%" stopColor="#ED32F1" stopOpacity={0} /> */}
+                  </linearGradient>
+                  <linearGradient id="colorX03" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#00F0FF" stopOpacity={0.9} />
+                    {/* <stop offset="95%" stopColor="#00F0FF" stopOpacity={0} /> */}
+                  </linearGradient>
+                </defs>
+                <XAxis dataKey="name" />
+                <YAxis />
+                <CartesianGrid strokeDasharray="0 3" />
+                <Tooltip />
+                <Bar type="monotone" dataKey="X01" stroke="#51FA35" fillOpacity={1} fill="url(#colorX01)" />
+                <Bar type="monotone" dataKey="X02" stroke="#ED32F1" fillOpacity={1} fill="url(#colorX02)" />
+                <Bar type="monotone" dataKey="X03" stroke="#00F0FF" fillOpacity={1} fill="url(#colorX03)" />
 
-            </BarChart>
+              </BarChart>
+            </ResponsiveContainer>
           )}
         </div>
       </div>

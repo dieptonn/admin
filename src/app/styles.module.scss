@@ -32,7 +32,7 @@
                 display: flex;
                 position: relative;
                 width: 23%;
-                padding: 2%;
+                padding: 1.5%;
                 border-radius: 18.667px;
                 border: 1.333px solid #313d4f;
                 background: #273142;
@@ -85,6 +85,8 @@
                             font-weight: 600;
                             line-height: normal;
                             white-space: nowrap;
+                            // overflow: hidden; /* Ẩn phần nội dung vượt quá kích thước */
+                            // text-overflow: ellipsis;
                         }
                     }
                 }
@@ -104,6 +106,10 @@
             background: #273142;
             stroke-width: 1.333px;
             stroke: #313d4f;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            // justify-content: center;
             .detailsDiv {
                 width: 100%;
                 margin-bottom: 30px;
