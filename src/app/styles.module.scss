@@ -12,14 +12,19 @@
         flex-direction: column;
         // justify-content: center;
         gap: 5vh;
-        .Titl {
-            color: #fff;
-            // font-family: "Nunito Sans";
-            font-size: 42.667px;
-            font-style: normal;
-            font-weight: 700;
-            line-height: normal;
-            letter-spacing: -0.152px;
+        .TitlDiv {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            .Titl {
+                color: #fff;
+                // font-family: "Nunito Sans";
+                font-size: 42.667px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: normal;
+                letter-spacing: -0.152px;
+            }
         }
         .total {
             width: 100%;

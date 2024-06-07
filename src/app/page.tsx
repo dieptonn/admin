@@ -4,7 +4,7 @@ import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Toolti
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { DownOutlined, BarChartOutlined, LineChartOutlined, AreaChartOutlined } from '@ant-design/icons';
-import { Button, Dropdown, message, Space } from 'antd';
+import { Button, Dropdown, Menu, message } from 'antd';
 import type { MenuProps } from 'antd';
 
 // Define interfaces for the API data structure
@@ -39,15 +39,15 @@ interface Data {
 
 export default function Home() {
   const [chartType, setChartType] = useState<'line' | 'area' | 'bar'>('line');
-  const [startIndex, setStartIndex] = useState(20);
+  const [startIndex, setStartIndex] = useState(0);
   const [apiData, setApiData] = useState<ApiResponse | null>(null);
-  const [route22Data, setRoute22Data] = useState<RouteData | null>(null);
+  const [selectedRouteData, setSelectedRouteData] = useState<RouteData | null>(null);
 
   // Fetch data from API
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/admin');
+        const response = await axios.get('http://localhost:8000/api/v1/home/admin');
         const modifiedData = response.data.graph_data.map((route: RouteData) => ({
           ...route,
           graph_data: route.graph_data.map(graph => ({
@@ -55,7 +55,12 @@ export default function Home() {
             time: graph.time.split(' ')[1] // Lấy phần tử sau khoảng trắng
           })).reverse()
         }));
+
         setApiData({ ...response.data, graph_data: modifiedData });
+        if (modifiedData.length > 0) {
+          setSelectedRouteData(modifiedData[0]);
+          setStartIndex(Math.max(0, modifiedData[0].graph_data.length - 20)); // Set initial startIndex
+        }
       } catch (error) {
         console.error('Error:', error);
         // Handle error
@@ -65,28 +70,13 @@ export default function Home() {
     fetchData();
   }, []);
 
-  // Filter data for route 22 when apiData changes
-  useEffect(() => {
-    if (apiData) {
-      const route22 = apiData.graph_data.find(route => route.route === '22');
-      if (route22) {
-        setRoute22Data(route22);
-      }
-    }
-  }, [apiData]);
-
-  const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    message.info('Click on left button.');
-    console.log('click left button', e);
-  };
-
+  // Handle chart type change
   const handleMenuClick: MenuProps['onClick'] = (e) => {
     message.info(`Switched to ${e.key === '1' ? 'Line' : e.key === '2' ? 'Area' : 'Bar'} Chart.`);
     setChartType(e.key === '1' ? 'line' : e.key === '2' ? 'area' : 'bar');
   };
 
-
-  const items: MenuProps['items'] = [
+  const chartTypeItems: MenuProps['items'] = [
     {
       label: 'Line Chart',
       key: '1',
@@ -105,15 +95,35 @@ export default function Home() {
     },
   ];
 
-  const menuProps = {
-    items,
+  const chartTypeMenuProps = {
+    items: chartTypeItems,
     onClick: handleMenuClick,
+  };
+
+  // Handle route change
+  const handleRouteChange: MenuProps['onClick'] = (e) => {
+    const selectedRoute = e.key;
+    const routeData = apiData?.graph_data.find(route => route.route === selectedRoute);
+    if (routeData) {
+      setSelectedRouteData(routeData);
+      setStartIndex(Math.max(0, routeData.graph_data.length - 20)); // Set start index to show last 20 entries
+    }
+  };
+
+  const routeItems: MenuProps['items'] = apiData?.graph_data.map(route => ({
+    label: `Route ${route.route}`,
+    key: route.route,
+  }));
+
+  const routeMenuProps = {
+    items: routeItems,
+    onClick: handleRouteChange,
   };
 
   // Prepare data for the chart
   let dataChart: Data[] = [];
-  if (route22Data) {
-    dataChart = route22Data.graph_data.flatMap((record: GraphData) => {
+  if (selectedRouteData) {
+    dataChart = selectedRouteData.graph_data.flatMap((record: GraphData) => {
       const entry: Data = { time: record.time };
       record.buses.forEach((bus: BusData) => {
         entry[bus.bus_plate] = bus.passenger_count;
@@ -127,7 +137,7 @@ export default function Home() {
 
   const handlePrevClick = () => {
     if (startIndex > 0) {
-      setStartIndex(startIndex - itemsPerPage);
+      setStartIndex(Math.max(0, startIndex - itemsPerPage));
     }
   };
 
@@ -143,22 +153,27 @@ export default function Home() {
   return (
     <div className={styles['main']}>
       <div className={styles['mainDiv']}>
-        <div className={styles['Titl']}>
-          Dashboard
+        <div className={styles['TitlDiv']}>
+          <div className={styles['Titl']}>
+            Dashboard
+          </div>
+          <div>
+            <Dropdown.Button menu={routeMenuProps}>
+              Select Route
+            </Dropdown.Button>
+          </div>
         </div>
-
         <div className={styles['details']}>
           <div className={styles['detailsDiv']}>
             <div className={styles['detailsTit']}>
               Sales Details
             </div>
             <div>
-              <Dropdown.Button menu={menuProps} onClick={handleButtonClick}>
+              <Dropdown.Button menu={chartTypeMenuProps}>
                 Chart type
               </Dropdown.Button>
             </div>
           </div>
-
 
           {chartType === 'line' && (
             <ResponsiveContainer width="100%" height={400}>
@@ -167,7 +182,7 @@ export default function Home() {
                 <XAxis dataKey="time" />
                 <YAxis />
                 <Tooltip />
-                {route22Data && route22Data.graph_data[0].buses.map((bus, index) => (
+                {selectedRouteData && selectedRouteData.graph_data[0].buses.map((bus, index) => (
                   <Line key={bus.bus_plate} dataKey={bus.bus_plate} fill={colors[index]} stroke={colors[index]} />
                 ))}
               </LineChart>
@@ -178,7 +193,7 @@ export default function Home() {
             <ResponsiveContainer width="100%" height={400}>
               <AreaChart data={visibleData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                 <defs>
-                  {route22Data && route22Data.graph_data[0].buses.map((bus, index) => (
+                  {selectedRouteData && selectedRouteData.graph_data[0].buses.map((bus, index) => (
                     <linearGradient key={index} id={`color${bus.bus_plate}`} x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor={colors[index]} stopOpacity={0.8} />
                       <stop offset="95%" stopColor={colors[index]} stopOpacity={0} />
@@ -189,19 +204,18 @@ export default function Home() {
                 <XAxis dataKey="time" />
                 <YAxis />
                 <Tooltip />
-                {route22Data && route22Data.graph_data[0].buses.map((bus, index) => (
+                {selectedRouteData && selectedRouteData.graph_data[0].buses.map((bus, index) => (
                   <Area key={bus.bus_plate} dataKey={bus.bus_plate} stroke={colors[index]} fillOpacity={1} fill={`url(#color${bus.bus_plate})`} />
                 ))}
               </AreaChart>
             </ResponsiveContainer>
           )}
 
-
           {chartType === 'bar' && (
             <ResponsiveContainer width="100%" height={400}>
               <BarChart data={visibleData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                 <defs>
-                  {route22Data && route22Data.graph_data[0].buses.map((bus, index) => (
+                  {selectedRouteData && selectedRouteData.graph_data[0].buses.map((bus, index) => (
                     <linearGradient key={index} id={`color${bus.bus_plate}`} x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor={colors[index]} stopOpacity={0.8} />
                       <stop offset="95%" stopColor={colors[index]} stopOpacity={0} />
@@ -212,7 +226,7 @@ export default function Home() {
                 <XAxis dataKey="time" />
                 <YAxis />
                 <Tooltip />
-                {route22Data && route22Data.graph_data[0].buses.map((bus, index) => (
+                {selectedRouteData && selectedRouteData.graph_data[0].buses.map((bus, index) => (
                   <Bar key={bus.bus_plate} dataKey={bus.bus_plate} stroke={colors[index]} fillOpacity={1} fill={`url(#color${bus.bus_plate})`} />
                 ))}
               </BarChart>
@@ -220,11 +234,11 @@ export default function Home() {
           )}
 
           <div className={styles['btn']}>
-            <Button onClick={handlePrevClick} disabled={startIndex === 0}>Pres</Button>
+            <Button onClick={handlePrevClick} disabled={startIndex === 0}>Prev</Button>
             <Button onClick={handleNextClick} disabled={startIndex + itemsPerPage >= dataChart.length}>Next</Button>
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
