@@ -6,6 +6,8 @@ import React, { useState, useEffect } from 'react';
 import { DownOutlined, BarChartOutlined, LineChartOutlined, AreaChartOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Menu, message } from 'antd';
 import type { MenuProps } from 'antd';
+import Image from 'next/image'
+
 
 // Define interfaces for the API data structure
 interface BusData {
@@ -161,6 +163,88 @@ export default function Home() {
             <Dropdown.Button menu={routeMenuProps}>
               Select Route
             </Dropdown.Button>
+          </div>
+        </div>
+        <div className={styles['total']}>
+          <div className={styles['totalUser']}>
+            <div className={styles['titl']}>
+              Total User
+            </div>
+            <div className={styles['num']}>
+              40,689
+            </div>
+            <div className={styles['info']}>
+              <Image width={32} height={32} src="/image/up.svg" alt="" />
+              <div className={styles['txt']}>
+                <div className={styles['txt1']}>
+                  8.5%
+                </div>
+                <div className={styles['txt2']}>
+                  Up from yesterday
+                </div>
+              </div>
+            </div>
+            <Image className={styles['img']} width={80} height={80} src="/image/user.svg" alt="" />
+          </div>
+          <div className={styles['totalUser']}>
+            <div className={styles['titl']}>
+              Total Order
+            </div>
+            <div className={styles['num']}>
+              10293
+            </div>
+            <div className={styles['info']}>
+              <Image width={32} height={32} src="/image/up.svg" alt="" />
+              <div className={styles['txt']}>
+                <div className={styles['txt1']}>
+                  1.3%
+                </div>
+                <div className={styles['txt2']}>
+                  Up from past week
+                </div>
+              </div>
+            </div>
+            <Image className={styles['img']} width={80} height={80} src="/image/order.svg" alt="" />
+          </div>
+          <div className={styles['totalUser']}>
+            <div className={styles['titl']}>
+              Total Sales
+            </div>
+            <div className={styles['num']}>
+              $89,000
+            </div>
+            <div className={styles['info']}>
+              <Image width={32} height={32} src="/image/down.svg" alt="" />
+              <div className={styles['txt']}>
+                <div className={styles['txt3']}>
+                  4.3%
+                </div>
+                <div className={styles['txt2']}>
+                  Down from yesterday
+                </div>
+              </div>
+            </div>
+            <Image className={styles['img']} width={80} height={80} src="/image/sale.svg" alt="" />
+          </div>
+          <div className={styles['totalUser']}>
+            <div className={styles['titl']}>
+              Total Pending
+            </div>
+            <div className={styles['num']}>
+              2040
+            </div>
+            <div className={styles['info']}>
+              <Image width={32} height={32} src="/image/up.svg" alt="" />
+              <div className={styles['txt']}>
+                <div className={styles['txt1']}>
+                  1.8%
+                </div>
+                <div className={styles['txt2']}>
+                  Up from yesterday
+                </div>
+              </div>
+            </div>
+            <Image className={styles['img']} width={80} height={80} src="/image/pending.svg" alt="" />
           </div>
         </div>
         <div className={styles['details']}>
