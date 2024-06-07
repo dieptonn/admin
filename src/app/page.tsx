@@ -1,28 +1,79 @@
 'use client'
 import styles from './styles.module.scss'
-import Image from 'next/image'
-import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, AreaChart, Area, BarChart, Bar } from 'recharts';
-import React, { useState } from 'react';
-import { DownOutlined, UserOutlined, BarChartOutlined, LineChartOutlined, AreaChartOutlined } from '@ant-design/icons';
-import type { MenuProps } from 'antd';
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Area, LineChart, AreaChart, Line } from 'recharts';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { DownOutlined, BarChartOutlined, LineChartOutlined, AreaChartOutlined } from '@ant-design/icons';
 import { Button, Dropdown, message, Space } from 'antd';
+import type { MenuProps } from 'antd';
 
+// Define interfaces for the API data structure
+interface BusData {
+  bus_plate: string;
+  passenger_count: number;
+}
 
+interface GraphData {
+  time: string;
+  buses: BusData[];
+}
 
+interface RouteData {
+  route: string;
+  total_passenger: number;
+  graph_data: GraphData[];
+}
 
+interface ApiResponse {
+  from: string;
+  to: string;
+  duration: string;
+  sum_passenger: number;
+  graph_data: RouteData[];
+}
 
 interface Data {
-  name: string;
-  X01: number;
-  X02: number;
-  X03: number;
+  time: string;
+  [key: string]: number | string; // Allow dynamic keys for bus plates
 }
 
 export default function Home() {
+  const [chartType, setChartType] = useState<'line' | 'area' | 'bar'>('line');
+  const [startIndex, setStartIndex] = useState(20);
+  const [apiData, setApiData] = useState<ApiResponse | null>(null);
+  const [route22Data, setRoute22Data] = useState<RouteData | null>(null);
 
+  // Fetch data from API
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/admin');
+        const modifiedData = response.data.graph_data.map((route: RouteData) => ({
+          ...route,
+          graph_data: route.graph_data.map(graph => ({
+            ...graph,
+            time: graph.time.split(' ')[1] // Lấy phần tử sau khoảng trắng
+          })).reverse()
+        }));
+        setApiData({ ...response.data, graph_data: modifiedData });
+      } catch (error) {
+        console.error('Error:', error);
+        // Handle error
+      }
+    };
 
-  const [chartType, setChartType] = useState<'line' | 'area' | 'bar'>('area');
-  const [startIndex, setStartIndex] = useState(0);
+    fetchData();
+  }, []);
+
+  // Filter data for route 22 when apiData changes
+  useEffect(() => {
+    if (apiData) {
+      const route22 = apiData.graph_data.find(route => route.route === '22');
+      if (route22) {
+        setRoute22Data(route22);
+      }
+    }
+  }, [apiData]);
 
   const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     message.info('Click on left button.');
@@ -30,21 +81,22 @@ export default function Home() {
   };
 
   const handleMenuClick: MenuProps['onClick'] = (e) => {
-    message.info(`Switched to ${e.key === '1' ? 'Area' : e.key === '2' ? 'Line' : 'Bar'} Chart.`);
-    setChartType(e.key === '1' ? 'area' : e.key === '2' ? 'line' : 'bar');
+    message.info(`Switched to ${e.key === '1' ? 'Line' : e.key === '2' ? 'Area' : 'Bar'} Chart.`);
+    setChartType(e.key === '1' ? 'line' : e.key === '2' ? 'area' : 'bar');
   };
+
 
   const items: MenuProps['items'] = [
     {
-      label: 'Area Chart',
+      label: 'Line Chart',
       key: '1',
-      icon: <AreaChartOutlined />,
+      icon: <LineChartOutlined />,
       danger: true,
     },
     {
-      label: 'Line Chart',
+      label: 'Area Chart',
       key: '2',
-      icon: <LineChartOutlined />,
+      icon: <AreaChartOutlined />,
     },
     {
       label: 'Bar Chart',
@@ -58,31 +110,20 @@ export default function Home() {
     onClick: handleMenuClick,
   };
 
+  // Prepare data for the chart
+  let dataChart: Data[] = [];
+  if (route22Data) {
+    dataChart = route22Data.graph_data.flatMap((record: GraphData) => {
+      const entry: Data = { time: record.time };
+      record.buses.forEach((bus: BusData) => {
+        entry[bus.bus_plate] = bus.passenger_count;
+      });
+      return entry;
+    });
+  }
 
-  const data: Data[] = [
-    { name: '5:00', X01: 40, X02: 24, X03: 20 },
-    { name: '6:00', X01: 30, X02: 13, X03: 21 },
-    { name: '7:00', X01: 20, X02: 9, X03: 29 },
-    { name: '8:00', X01: 27, X02: 39, X03: 20 },
-    { name: '9:00', X01: 18, X02: 48, X03: 21 },
-    { name: '10:00', X01: 23, X02: 38, X03: 25 },
-    { name: '11:00', X01: 34, X02: 43, X03: 21 },
-    { name: '12:00', X01: 40, X02: 24, X03: 20 },
-    { name: '13:00', X01: 30, X02: 13, X03: 21 },
-
-    { name: '14:00', X01: 20, X02: 9, X03: 29 },
-    { name: '15:00', X01: 27, X02: 39, X03: 20 },
-    { name: '16:00', X01: 18, X02: 48, X03: 21 },
-    { name: '17:00', X01: 40, X02: 24, X03: 20 },
-    { name: '18:00', X01: 30, X02: 13, X03: 21 },
-    { name: '19:00', X01: 20, X02: 9, X03: 29 },
-    { name: '20:00', X01: 27, X02: 39, X03: 20 },
-    { name: '21:00', X01: 18, X02: 48, X03: 21 },
-    { name: '22:00', X01: 23, X02: 38, X03: 25 },
-  ];
-
-  const itemsPerPage = 9;
-  const visibleData = data.slice(startIndex, startIndex + itemsPerPage);
+  const itemsPerPage = 20;
+  const visibleData = dataChart.slice(startIndex, startIndex + itemsPerPage);
 
   const handlePrevClick = () => {
     if (startIndex > 0) {
@@ -91,10 +132,13 @@ export default function Home() {
   };
 
   const handleNextClick = () => {
-    if (startIndex + itemsPerPage < data.length) {
+    if (startIndex + itemsPerPage < dataChart.length) {
       setStartIndex(startIndex + itemsPerPage);
     }
   };
+
+  // Define colors for buses
+  const colors = ['#FFD700', '#ED32F1', '#00F0FF', '#FF5733', '#51FA35'];
 
   return (
     <div className={styles['main']}>
@@ -102,96 +146,7 @@ export default function Home() {
         <div className={styles['Titl']}>
           Dashboard
         </div>
-        <div className={styles['total']}>
-          <div className={styles['totalUser']}>
-            <div className={styles['titl']}>
-              Total User
-            </div>
-            <div className={styles['num']}>
-              40,689
-            </div>
-            <div className={styles['info']}>
-              <Image width={32} height={32} src="/image/up.svg" alt="" />
 
-              <div className={styles['txt']}>
-                <div className={styles['txt1']}>
-                  8.5%
-                </div>
-                <div className={styles['txt2']}>
-                  Up from yesterday
-                </div>
-              </div>
-            </div>
-            <Image className={styles['img']} width={80} height={80} src="/image/user.svg" alt="" />
-
-          </div>
-          <div className={styles['totalUser']}>
-            <div className={styles['titl']}>
-              Total Order
-            </div>
-            <div className={styles['num']}>
-              10293
-            </div>
-            <div className={styles['info']}>
-              <Image width={32} height={32} src="/image/up.svg" alt="" />
-
-              <div className={styles['txt']}>
-                <div className={styles['txt1']}>
-                  1.3%
-                </div>
-                <div className={styles['txt2']}>
-                  Up from past week
-                </div>
-              </div>
-            </div>
-            <Image className={styles['img']} width={80} height={80} src="/image/order.svg" alt="" />
-
-          </div>
-          <div className={styles['totalUser']}>
-            <div className={styles['titl']}>
-              Total Sales
-            </div>
-            <div className={styles['num']}>
-              $89,000
-            </div>
-            <div className={styles['info']}>
-              <Image width={32} height={32} src="/image/down.svg" alt="" />
-
-              <div className={styles['txt']}>
-                <div className={styles['txt3']}>
-                  4.3%
-                </div>
-                <div className={styles['txt2']}>
-                  Down from yesterday
-                </div>
-              </div>
-            </div>
-            <Image className={styles['img']} width={80} height={80} src="/image/sale.svg" alt="" />
-
-          </div>
-          <div className={styles['totalUser']}>
-            <div className={styles['titl']}>
-              Total Pending
-            </div>
-            <div className={styles['num']}>
-              2040
-            </div>
-            <div className={styles['info']}>
-              <Image width={32} height={32} src="/image/up.svg" alt="" />
-
-              <div className={styles['txt']}>
-                <div className={styles['txt1']}>
-                  1.8%
-                </div>
-                <div className={styles['txt2']}>
-                  Up from yesterday
-                </div>
-              </div>
-            </div>
-            <Image className={styles['img']} width={80} height={80} src="/image/pending.svg" alt="" />
-
-          </div>
-        </div>
         <div className={styles['details']}>
           <div className={styles['detailsDiv']}>
             <div className={styles['detailsTit']}>
@@ -203,107 +158,73 @@ export default function Home() {
               </Dropdown.Button>
             </div>
           </div>
-          {chartType === 'area' && (
-            <ResponsiveContainer width="100%" aspect={3.55}>
-              <AreaChart data={visibleData}
-                margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="colorX01" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#51FA35" stopOpacity={0.8} />
-                    <stop offset="95%" stopColor="#51FA35" stopOpacity={0} />
-                  </linearGradient>
-                  <linearGradient id="colorX02" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#ED32F1" stopOpacity={0.8} />
-                    <stop offset="95%" stopColor="#ED32F1" stopOpacity={0} />
-                  </linearGradient>
-                  <linearGradient id="colorX03" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#00F0FF" stopOpacity={0.8} />
-                    <stop offset="95%" stopColor="#00F0FF" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <XAxis dataKey="name" />
-                <YAxis />
-                <CartesianGrid strokeDasharray="0 2" />
-                <Tooltip />
-                <Area type="monotone" dataKey="X01" stroke="#51FA35" fillOpacity={1} fill="url(#colorX01)" />
-                <Area type="monotone" dataKey="X02" stroke="#ED32F1" fillOpacity={1} fill="url(#colorX02)" />
-                <Area type="monotone" dataKey="X03" stroke="#00F0FF" fillOpacity={1} fill="url(#colorX03)" />
 
-              </AreaChart>
-            </ResponsiveContainer>
-          )}
 
           {chartType === 'line' && (
-            <ResponsiveContainer width="100%" aspect={3.55}>
-              <LineChart data={visibleData}
-                margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="colorX01" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#51FA35" stopOpacity={1} />
-                    <stop offset="95%" stopColor="#51FA35" stopOpacity={0} />
-                  </linearGradient>
-                  <linearGradient id="colorX02" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#ED32F1" stopOpacity={1} />
-                    <stop offset="95%" stopColor="#ED32F1" stopOpacity={0} />
-                  </linearGradient>
-                  <linearGradient id="colorX03" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#00F0FF" stopOpacity={1} />
-                    <stop offset="95%" stopColor="#00F0FF" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <XAxis dataKey="name" />
+            <ResponsiveContainer width="100%" height={400}>
+              <LineChart data={visibleData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="time" />
                 <YAxis />
-                <CartesianGrid strokeDasharray="0 2" />
                 <Tooltip />
-                <Line type="monotone" dataKey="X01" stroke="#51FA35" fillOpacity={1} fill="url(#colorX01)" />
-                <Line type="monotone" dataKey="X02" stroke="#ED32F1" fillOpacity={1} fill="url(#colorX02)" />
-                <Line type="monotone" dataKey="X03" stroke="#00F0FF" fillOpacity={1} fill="url(#colorX03)" />
-
+                {route22Data && route22Data.graph_data[0].buses.map((bus, index) => (
+                  <Line key={bus.bus_plate} dataKey={bus.bus_plate} fill={colors[index]} stroke={colors[index]} />
+                ))}
               </LineChart>
             </ResponsiveContainer>
           )}
 
-          {chartType === 'bar' && (
-            <ResponsiveContainer width="100%" aspect={3.55}>
-              <BarChart data={visibleData}
-                margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+          {chartType === 'area' && (
+            <ResponsiveContainer width="100%" height={400}>
+              <AreaChart data={visibleData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                 <defs>
-                  <linearGradient id="colorX01" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#51FA35" stopOpacity={0.9} />
-                    {/* <stop offset="95%" stopColor="#51FA35" stopOpacity={0} /> */}
-                  </linearGradient>
-                  <linearGradient id="colorX02" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#ED32F1" stopOpacity={0.9} />
-                    {/* <stop offset="95%" stopColor="#ED32F1" stopOpacity={0} /> */}
-                  </linearGradient>
-                  <linearGradient id="colorX03" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#00F0FF" stopOpacity={0.9} />
-                    {/* <stop offset="95%" stopColor="#00F0FF" stopOpacity={0} /> */}
-                  </linearGradient>
+                  {route22Data && route22Data.graph_data[0].buses.map((bus, index) => (
+                    <linearGradient key={index} id={`color${bus.bus_plate}`} x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor={colors[index]} stopOpacity={0.8} />
+                      <stop offset="95%" stopColor={colors[index]} stopOpacity={0} />
+                    </linearGradient>
+                  ))}
                 </defs>
-                <XAxis dataKey="name" />
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="time" />
                 <YAxis />
-                <CartesianGrid strokeDasharray="0 3" />
                 <Tooltip />
-                <Bar type="monotone" dataKey="X01" stroke="#51FA35" fillOpacity={1} fill="url(#colorX01)" />
-                <Bar type="monotone" dataKey="X02" stroke="#ED32F1" fillOpacity={1} fill="url(#colorX02)" />
-                <Bar type="monotone" dataKey="X03" stroke="#00F0FF" fillOpacity={1} fill="url(#colorX03)" />
+                {route22Data && route22Data.graph_data[0].buses.map((bus, index) => (
+                  <Area key={bus.bus_plate} dataKey={bus.bus_plate} stroke={colors[index]} fillOpacity={1} fill={`url(#color${bus.bus_plate})`} />
+                ))}
+              </AreaChart>
+            </ResponsiveContainer>
+          )}
 
+
+          {chartType === 'bar' && (
+            <ResponsiveContainer width="100%" height={400}>
+              <BarChart data={visibleData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                <defs>
+                  {route22Data && route22Data.graph_data[0].buses.map((bus, index) => (
+                    <linearGradient key={index} id={`color${bus.bus_plate}`} x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor={colors[index]} stopOpacity={0.8} />
+                      <stop offset="95%" stopColor={colors[index]} stopOpacity={0} />
+                    </linearGradient>
+                  ))}
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="time" />
+                <YAxis />
+                <Tooltip />
+                {route22Data && route22Data.graph_data[0].buses.map((bus, index) => (
+                  <Bar key={bus.bus_plate} dataKey={bus.bus_plate} stroke={colors[index]} fillOpacity={1} fill={`url(#color${bus.bus_plate})`} />
+                ))}
               </BarChart>
             </ResponsiveContainer>
           )}
 
           <div className={styles['btn']}>
-            <button onClick={handlePrevClick} disabled={startIndex === 0}>
-              <Image width={32} height={32} src="/image/pre.svg" alt="Previous" />
-            </button>
-            <button onClick={handleNextClick} disabled={startIndex + itemsPerPage >= data.length}>
-              <Image width={32} height={32} src="/image/next.svg" alt="Next" />
-            </button>
+            <Button onClick={handlePrevClick} disabled={startIndex === 0}>Pres</Button>
+            <Button onClick={handleNextClick} disabled={startIndex + itemsPerPage >= dataChart.length}>Next</Button>
           </div>
-
         </div>
       </div>
     </div>
-  )
+  );
 }
