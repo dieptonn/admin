@@ -61,7 +61,7 @@ export default function Home() {
         setApiData({ ...response.data, graph_data: modifiedData });
         if (modifiedData.length > 0) {
           setSelectedRouteData(modifiedData[0]);
-          setStartIndex(Math.max(0, modifiedData[0].graph_data.length - 20)); // Set initial startIndex
+          setStartIndex(Math.max(0, modifiedData[0].graph_data.length - 18)); // Set initial startIndex
         }
       } catch (error) {
         console.error('Error:', error);
@@ -108,7 +108,7 @@ export default function Home() {
     const routeData = apiData?.graph_data.find(route => route.route === selectedRoute);
     if (routeData) {
       setSelectedRouteData(routeData);
-      setStartIndex(Math.max(0, routeData.graph_data.length - 20)); // Set start index to show last 20 entries
+      setStartIndex(Math.max(0, routeData.graph_data.length - 18)); // Set start index to show last 20 entries
     }
   };
 
@@ -134,7 +134,7 @@ export default function Home() {
     });
   }
 
-  const itemsPerPage = 20;
+  const itemsPerPage = 18;
   const visibleData = dataChart.slice(startIndex, startIndex + itemsPerPage);
 
   const handlePrevClick = () => {
