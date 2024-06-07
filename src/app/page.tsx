@@ -49,7 +49,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/v1/home/admin');
+        const response = await axios.get('https://nextstore-be.onrender.com/api/v1/home/admin');
         const modifiedData = response.data.graph_data.map((route: RouteData) => ({
           ...route,
           graph_data: route.graph_data.map(graph => ({
