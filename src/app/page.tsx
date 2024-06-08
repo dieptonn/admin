@@ -7,7 +7,7 @@ import { DownOutlined, BarChartOutlined, LineChartOutlined, AreaChartOutlined } 
 import { Button, Dropdown, Menu, message } from 'antd';
 import type { MenuProps } from 'antd';
 import Image from 'next/image'
-
+import CustomTooltip from '@/services/customTooltip';
 
 // Define interfaces for the API data structure
 interface BusData {
@@ -168,10 +168,10 @@ export default function Home() {
         <div className={styles['total']}>
           <div className={styles['totalUser']}>
             <div className={styles['titl']}>
-              Total User
+              Total Passenger
             </div>
             <div className={styles['num']}>
-              40,689
+              {apiData ? apiData.sum_passenger : 'Loading...'}
             </div>
             <div className={styles['info']}>
               <Image width={32} height={32} src="/image/up.svg" alt="" />
@@ -188,10 +188,10 @@ export default function Home() {
           </div>
           <div className={styles['totalUser']}>
             <div className={styles['titl']}>
-              Total Order
+              Route Passenger
             </div>
             <div className={styles['num']}>
-              10293
+              {selectedRouteData ? selectedRouteData.total_passenger : 'Loading...'}
             </div>
             <div className={styles['info']}>
               <Image width={32} height={32} src="/image/up.svg" alt="" />
@@ -208,7 +208,7 @@ export default function Home() {
           </div>
           <div className={styles['totalUser']}>
             <div className={styles['titl']}>
-              Total Sales
+              Total imcome
             </div>
             <div className={styles['num']}>
               $89,000
@@ -265,9 +265,10 @@ export default function Home() {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="time" />
                 <YAxis />
-                <Tooltip />
+                <Tooltip /> 
+                <Legend />
                 {selectedRouteData && selectedRouteData.graph_data[0].buses.map((bus, index) => (
-                  <Line key={bus.bus_plate} dataKey={bus.bus_plate} fill={colors[index]} stroke={colors[index]} />
+                  <Line key={bus.bus_plate} dataKey={bus.bus_plate} fill={colors[index]} stroke={colors[index]} activeDot={{ r: 6 }} />
                 ))}
               </LineChart>
             </ResponsiveContainer>
@@ -288,6 +289,7 @@ export default function Home() {
                 <XAxis dataKey="time" />
                 <YAxis />
                 <Tooltip />
+                <Legend />
                 {selectedRouteData && selectedRouteData.graph_data[0].buses.map((bus, index) => (
                   <Area key={bus.bus_plate} dataKey={bus.bus_plate} stroke={colors[index]} fillOpacity={1} fill={`url(#color${bus.bus_plate})`} />
                 ))}
@@ -310,6 +312,7 @@ export default function Home() {
                 <XAxis dataKey="time" />
                 <YAxis />
                 <Tooltip />
+                <Legend />
                 {selectedRouteData && selectedRouteData.graph_data[0].buses.map((bus, index) => (
                   <Bar key={bus.bus_plate} dataKey={bus.bus_plate} stroke={colors[index]} fillOpacity={1} fill={`url(#color${bus.bus_plate})`} />
                 ))}
