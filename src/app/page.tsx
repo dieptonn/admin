@@ -44,6 +44,7 @@ export default function Home() {
   const [startIndex, setStartIndex] = useState(0);
   const [apiData, setApiData] = useState<ApiResponse | null>(null);
   const [selectedRouteData, setSelectedRouteData] = useState<RouteData | null>(null);
+  const [selectedBuses, setSelectedBuses] = useState<string[]>([]);
 
   // Fetch data from API
   useEffect(() => {
@@ -148,6 +149,19 @@ export default function Home() {
       setStartIndex(startIndex + itemsPerPage);
     }
   };
+
+
+  const toggleBusSelection = (busPlate: string) => {
+    const updatedSelectedBuses = selectedBuses.includes(busPlate)
+      ? selectedBuses.filter(plate => plate !== busPlate)
+      : [...selectedBuses, busPlate];
+    setSelectedBuses(updatedSelectedBuses);
+  };
+
+  const isBusSelected = (busPlate: string) => {
+    return selectedBuses.length === 0 || selectedBuses.includes(busPlate);
+  };
+
 
   // Define colors for buses
   const colors = ['#FFD700', '#ED32F1', '#00F0FF', '#FF5733', '#51FA35'];
@@ -265,14 +279,34 @@ export default function Home() {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="time" />
                 <YAxis />
-                <Tooltip /> 
-                <Legend />
+                <Tooltip />
                 {selectedRouteData && selectedRouteData.graph_data[0].buses.map((bus, index) => (
-                  <Line key={bus.bus_plate} dataKey={bus.bus_plate} fill={colors[index]} stroke={colors[index]} activeDot={{ r: 6 }} />
+                  <Line
+                    key={bus.bus_plate}
+                    dataKey={bus.bus_plate}
+                    stroke={isBusSelected(bus.bus_plate) ? colors[index] : '#273142'} // Use different color for selected/unselected buses
+                    strokeWidth={isBusSelected(bus.bus_plate) ? 2 : 1} // Adjust stroke width based on selection
+                    dot={isBusSelected(bus.bus_plate) ? { r: 4 } : false}
+                  />
+                  // <Line key={bus.bus_plate} dataKey={bus.bus_plate} fill={colors[index]} stroke={colors[index]} activeDot={{ r: 6 }} />
+
                 ))}
+                <Legend
+                  payload={selectedRouteData ? selectedRouteData.graph_data[0].buses.map((bus, index) => ({
+                    value: bus.bus_plate,
+                    type: 'line',
+                    id: bus.bus_plate || '', // Ensure id is not undefined
+                    color: isBusSelected(bus.bus_plate) ? colors[index] : '', // Use different color for selected/unselected buses
+                  })) : []} // Provide an empty array if payload is null or undefined
+                  onClick={(e) => {
+                    const busPlate = e.id;
+                    toggleBusSelection(busPlate ?? ''); // Ensure busPlate is not undefined
+                  }} // Toggle bus selection on click
+                />
               </LineChart>
             </ResponsiveContainer>
           )}
+
 
           {chartType === 'area' && (
             <ResponsiveContainer width="100%" height={400}>
