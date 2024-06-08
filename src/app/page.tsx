@@ -158,6 +158,12 @@ export default function Home() {
     setSelectedBuses(updatedSelectedBuses);
   };
 
+  // const toggleBusSelection = (busPlate: string) => {
+  //   setSelectedBuses(prevSelectedBuses => prevSelectedBuses.includes(busPlate) ? [] : [busPlate]);
+  // };
+
+
+
   const isBusSelected = (busPlate: string) => {
     return selectedBuses.length === 0 || selectedBuses.includes(busPlate);
   };
@@ -287,6 +293,7 @@ export default function Home() {
                     stroke={isBusSelected(bus.bus_plate) ? colors[index] : '#273142'} // Use different color for selected/unselected buses
                     strokeWidth={isBusSelected(bus.bus_plate) ? 2 : 1} // Adjust stroke width based on selection
                     dot={isBusSelected(bus.bus_plate) ? { r: 4 } : false}
+                    animationDuration={500}
                   />
                   // <Line key={bus.bus_plate} dataKey={bus.bus_plate} fill={colors[index]} stroke={colors[index]} activeDot={{ r: 6 }} />
 
