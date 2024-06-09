@@ -181,7 +181,7 @@ export default function Home() {
           </div>
           <div>
             <Dropdown.Button menu={routeMenuProps}>
-              Select Route
+              {selectedRouteData ? `Route ${selectedRouteData.route}` : 'Select Route'}
             </Dropdown.Button>
           </div>
         </div>
@@ -274,7 +274,7 @@ export default function Home() {
             </div>
             <div>
               <Dropdown.Button menu={chartTypeMenuProps}>
-                Chart type
+                {chartType === 'line' ? 'Line Chart' : chartType === 'area' ? 'Area Chart' : 'Bar Chart'}
               </Dropdown.Button>
             </div>
           </div>
