@@ -1,6 +1,6 @@
 'use client'
 import styles from './styles.module.scss'
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Area, LineChart, AreaChart, Line } from 'recharts';
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LineChart, AreaChart, Line, Area } from 'recharts';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { DownOutlined, BarChartOutlined, LineChartOutlined, AreaChartOutlined } from '@ant-design/icons';
@@ -45,6 +45,7 @@ export default function Home() {
   const [apiData, setApiData] = useState<ApiResponse | null>(null);
   const [selectedRouteData, setSelectedRouteData] = useState<RouteData | null>(null);
   const [selectedBuses, setSelectedBuses] = useState<string[]>([]);
+  const [showAllData, setShowAllData] = useState(false); // New state to control data display
 
   // Fetch data from API
   useEffect(() => {
@@ -136,7 +137,7 @@ export default function Home() {
   }
 
   const itemsPerPage = 18;
-  const visibleData = dataChart.slice(startIndex, startIndex + itemsPerPage);
+  const visibleData = showAllData ? dataChart : dataChart.slice(startIndex, startIndex + itemsPerPage);
 
   const handlePrevClick = () => {
     if (startIndex > 0) {
@@ -150,7 +151,6 @@ export default function Home() {
     }
   };
 
-
   const toggleBusSelection = (busPlate: string) => {
     const updatedSelectedBuses = selectedBuses.includes(busPlate)
       ? selectedBuses.filter(plate => plate !== busPlate)
@@ -158,16 +158,9 @@ export default function Home() {
     setSelectedBuses(updatedSelectedBuses);
   };
 
-  // const toggleBusSelection = (busPlate: string) => {
-  //   setSelectedBuses(prevSelectedBuses => prevSelectedBuses.includes(busPlate) ? [] : [busPlate]);
-  // };
-
-
-
   const isBusSelected = (busPlate: string) => {
     return selectedBuses.length === 0 || selectedBuses.includes(busPlate);
   };
-
 
   // Define colors for buses
   const colors = ['#FFD700', '#ED32F1', '#00F0FF', '#FF5733', '#51FA35'];
@@ -272,10 +265,14 @@ export default function Home() {
             <div className={styles['detailsTit']}>
               Sales Details
             </div>
-            <div>
-              <Dropdown.Button menu={chartTypeMenuProps}>
-                {chartType === 'line' ? 'Line Chart' : chartType === 'area' ? 'Area Chart' : 'Bar Chart'}
-              </Dropdown.Button>
+            <div className={styles['detailsTit1']}>
+              <Button onClick={() => setShowAllData(false)}>1.5h</Button>
+              <Button onClick={() => setShowAllData(true)}>3h</Button>
+              <div>
+                <Dropdown.Button menu={chartTypeMenuProps}>
+                  {chartType === 'line' ? 'Line Chart' : chartType === 'area' ? 'Area Chart' : 'Bar Chart'}
+                </Dropdown.Button>
+              </div>
             </div>
           </div>
 
@@ -295,8 +292,6 @@ export default function Home() {
                     dot={isBusSelected(bus.bus_plate) ? { r: 4 } : false}
                     animationDuration={500}
                   />
-                  // <Line key={bus.bus_plate} dataKey={bus.bus_plate} fill={colors[index]} stroke={colors[index]} activeDot={{ r: 6 }} />
-
                 ))}
                 <Legend
                   payload={selectedRouteData ? selectedRouteData.graph_data[0].buses.map((bus, index) => ({
@@ -313,7 +308,6 @@ export default function Home() {
               </LineChart>
             </ResponsiveContainer>
           )}
-
 
           {chartType === 'area' && (
             <ResponsiveContainer width="100%" height={400}>
@@ -361,12 +355,14 @@ export default function Home() {
             </ResponsiveContainer>
           )}
 
-          <div className={styles['btn']}>
-            <Button onClick={handlePrevClick} disabled={startIndex === 0}>Prev</Button>
-            <Button onClick={handleNextClick} disabled={startIndex + itemsPerPage >= dataChart.length}>Next</Button>
-          </div>
+          {!showAllData && (
+            <div className={styles['btn']}>
+              <Button onClick={handlePrevClick} disabled={startIndex === 0}>Prev</Button>
+              <Button onClick={handleNextClick} disabled={startIndex + itemsPerPage >= dataChart.length}>Next</Button>
+            </div>
+          )}
         </div>
       </div>
-    </div >
+    </div>
   );
 }
