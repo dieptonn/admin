@@ -35,7 +35,7 @@ const Page = () => {
                                 Tháng
                             </div>
                             <div className={styles['content']}>
-                                Our Bachelor of Commerce program is ACBSP-accredited.
+                                Trải nghiệm khá tệ, lơ xe đuổi tôi xuống vì tôi là lao công
                             </div>
                         </div>
                         <div className={styles['time']}>
@@ -53,7 +53,7 @@ const Page = () => {
                                 Ngày
                             </div>
                             <div className={styles['content']}>
-                                Our Bachelor of Commerce program is ACBSP-accredited.
+                                Chất lượng tuyệt vời
                             </div>
                         </div>
                         <div className={styles['time']}>
@@ -71,7 +71,7 @@ const Page = () => {
                                 Quý
                             </div>
                             <div className={styles['content']}>
-                                Our Bachelor of Commerce program is ACBSP-accredited.
+                                Niềm nở với khách hàng, luôn chào hỏi, thật đáng tuyên dương
                             </div>
                         </div>
                         <div className={styles['time']}>
@@ -89,7 +89,7 @@ const Page = () => {
                                 Ngày
                             </div>
                             <div className={styles['content']}>
-                                Our Bachelor of Commerce program is ACBSP-accredited.
+                                Dịch vụ tất tốt
                             </div>
                         </div>
                         <div className={styles['time']}>
@@ -107,7 +107,7 @@ const Page = () => {
                                 Ngày
                             </div>
                             <div className={styles['content']}>
-                                Our Bachelor of Commerce program is ACBSP-accredited.
+                                Chất lượng khá tệ, đông đúc không có chỗ ngồi
                             </div>
                         </div>
                         <div className={styles['time']}>
@@ -125,7 +125,7 @@ const Page = () => {
                                 Quý
                             </div>
                             <div className={styles['content']}>
-                                Our Bachelor of Commerce program is ACBSP-accredited.
+                                Ghế bẩn không lau chùi
                             </div>
                         </div>
                         <div className={styles['time']}>
@@ -143,7 +143,7 @@ const Page = () => {
                                 Quý
                             </div>
                             <div className={styles['content']}>
-                                Our Bachelor of Commerce program is ACBSP-accredited.
+                                Tài xế không có tính lịch sự với khách hàng
                             </div>
                         </div>
                         <div className={styles['time']}>
@@ -161,7 +161,7 @@ const Page = () => {
                                 Quý
                             </div>
                             <div className={styles['content']}>
-                                Our Bachelor of Commerce program is ACBSP-accredited.
+                                Tài xế rất chu đáo với người khuyết tật
                             </div>
                         </div>
                         <div className={styles['time']}>
@@ -179,7 +179,7 @@ const Page = () => {
                                 Tháng
                             </div>
                             <div className={styles['content']}>
-                                Our Bachelor of Commerce program is ACBSP-accredited.
+                                Điều hòa hỏng
                             </div>
                         </div>
                         <div className={styles['time']}>
@@ -197,7 +197,7 @@ const Page = () => {
                                 Tháng
                             </div>
                             <div className={styles['content']}>
-                                Our Bachelor of Commerce program is ACBSP-accredited.
+                                Đi quá nhanh, ảnh hưởng người đi đường
                             </div>
                         </div>
                         <div className={styles['time']}>
@@ -215,7 +215,7 @@ const Page = () => {
                                 Ngày
                             </div>
                             <div className={styles['content']}>
-                                Our Bachelor of Commerce program is ACBSP-accredited.
+                                Tài xế vươt đèn đỏ
                             </div>
                         </div>
                         <div className={styles['time']}>
