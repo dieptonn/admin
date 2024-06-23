@@ -50,7 +50,7 @@ const Page = () => {
                                 Ngô Công Thắng
                             </div>
                             <div className={styles['action2']}>
-                                Ngày
+                                Lượt
                             </div>
                             <div className={styles['content']}>
                                 Chất lượng tuyệt vời
@@ -86,7 +86,7 @@ const Page = () => {
                                 Đỗ Duy Tiến
                             </div>
                             <div className={styles['action2']}>
-                                Ngày
+                                Lượt
                             </div>
                             <div className={styles['content']}>
                                 Dịch vụ tất tốt
@@ -104,7 +104,7 @@ const Page = () => {
                                 Nguyễn Thị Hải Hà
                             </div>
                             <div className={styles['action2']}>
-                                Ngày
+                                Lượt
                             </div>
                             <div className={styles['content']}>
                                 Chất lượng khá tệ, đông đúc không có chỗ ngồi
@@ -212,7 +212,7 @@ const Page = () => {
                                 Trần Vũ Tiến Công
                             </div>
                             <div className={styles['action2']}>
-                                Ngày
+                                Lượt
                             </div>
                             <div className={styles['content']}>
                                 Tài xế vươt đèn đỏ
