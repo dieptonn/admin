@@ -46,6 +46,8 @@ export default function Home() {
   const [selectedRouteData, setSelectedRouteData] = useState<RouteData | null>(null);
   const [selectedBuses, setSelectedBuses] = useState<string[]>([]);
   const [showAllData, setShowAllData] = useState(false); // New state to control data display
+  const [selectAllBuses, setSelectAllBuses] = useState(false);
+  const [top5Routes, setTop5Routes] = useState<RouteData[]>([]);
 
   // Fetch data from API
   useEffect(() => {
@@ -60,11 +62,17 @@ export default function Home() {
           })).reverse()
         }));
 
+        const sortedRoutes = [...modifiedData].sort((a: RouteData, b: RouteData) => b.total_passenger - a.total_passenger);
+        const top5Routes = sortedRoutes.slice(0, 5);
+
         setApiData({ ...response.data, graph_data: modifiedData });
         if (modifiedData.length > 0) {
           setSelectedRouteData(modifiedData[0]);
           setStartIndex(Math.max(0, modifiedData[0].graph_data.length - 18)); // Set initial startIndex
         }
+
+        setTop5Routes(top5Routes);
+
       } catch (error) {
         console.error('Error:', error);
         // Handle error
@@ -124,6 +132,29 @@ export default function Home() {
     onClick: handleRouteChange,
   };
 
+  // Handle bus selection
+  const handleBusSelection: MenuProps['onClick'] = (e) => {
+    const selectedBus = e.key;
+    toggleBusSelection(selectedBus);
+  };
+
+  // Prepare bus items for the dropdown menu
+  const busItems: MenuProps['items'] = selectedRouteData?.graph_data[0].buses.map(bus => ({
+    label: `Bus ${bus.bus_plate}`,
+    key: bus.bus_plate,
+  }));
+
+  const busMenuProps = {
+    items: busItems,
+    onClick: handleBusSelection,
+  };
+
+  const handleAll = () => {
+    setSelectedBuses([]);
+  };
+
+
+
   // Prepare data for the chart
   let dataChart: Data[] = [];
   if (selectedRouteData) {
@@ -152,11 +183,19 @@ export default function Home() {
   };
 
   const toggleBusSelection = (busPlate: string) => {
-    const updatedSelectedBuses = selectedBuses.includes(busPlate)
-      ? selectedBuses.filter(plate => plate !== busPlate)
-      : [...selectedBuses, busPlate];
-    setSelectedBuses(updatedSelectedBuses);
+    // Check if the busPlate is already selected
+    const isSelected = selectedBuses.includes(busPlate);
+
+    if (isSelected) {
+      // If already selected, remove it from selectedBuses
+      const updatedSelectedBuses = selectedBuses.filter((plate) => plate !== busPlate);
+      setSelectedBuses(updatedSelectedBuses);
+    } else {
+      // If not selected, just set it as the only selected bus
+      setSelectedBuses([busPlate]);
+    }
   };
+
 
   const isBusSelected = (busPlate: string) => {
     return selectedBuses.length === 0 || selectedBuses.includes(busPlate);
@@ -201,50 +240,10 @@ export default function Home() {
           </div>
           <div className={styles['totalUser']}>
             <div className={styles['titl']}>
-              Route Passenger
+              Current Route
             </div>
             <div className={styles['num']}>
-              {selectedRouteData ? selectedRouteData.total_passenger : 'Loading...'}
-            </div>
-            <div className={styles['info']}>
-              <Image width={32} height={32} src="/image/up.svg" alt="" />
-              <div className={styles['txt']}>
-                <div className={styles['txt1']}>
-                  1.3%
-                </div>
-                <div className={styles['txt2']}>
-                  Up from past week
-                </div>
-              </div>
-            </div>
-            <Image className={styles['img']} width={80} height={80} src="/image/order.svg" alt="" />
-          </div>
-          <div className={styles['totalUser']}>
-            <div className={styles['titl']}>
-              Total imcome
-            </div>
-            <div className={styles['num']}>
-              $89,000
-            </div>
-            <div className={styles['info']}>
-              <Image width={32} height={32} src="/image/down.svg" alt="" />
-              <div className={styles['txt']}>
-                <div className={styles['txt3']}>
-                  4.3%
-                </div>
-                <div className={styles['txt2']}>
-                  Down from yesterday
-                </div>
-              </div>
-            </div>
-            <Image className={styles['img']} width={80} height={80} src="/image/sale.svg" alt="" />
-          </div>
-          <div className={styles['totalUser']}>
-            <div className={styles['titl']}>
-              Total Pending
-            </div>
-            <div className={styles['num']}>
-              2040
+              Route {selectedRouteData ? selectedRouteData.route : 'Loading...'}
             </div>
             <div className={styles['info']}>
               <Image width={32} height={32} src="/image/up.svg" alt="" />
@@ -259,11 +258,72 @@ export default function Home() {
             </div>
             <Image className={styles['img']} width={80} height={80} src="/image/pending.svg" alt="" />
           </div>
+          <div className={styles['totalUser']}>
+            <div className={styles['titl']}>
+              Route Passenger
+            </div>
+            <div className={styles['num']}>
+              {selectedRouteData ? selectedRouteData.total_passenger : 'Loading...'}
+            </div>
+            <div className={styles['info']}>
+              <Image width={32} height={32} src="/image/down.svg" alt="" />
+              <div className={styles['txt']}>
+                <div className={styles['txt3']}>
+                  4.3%
+                </div>
+                <div className={styles['txt2']}>
+                  Down from yesterday
+                </div>
+              </div>
+            </div>
+            <Image className={styles['img']} width={80} height={80} src="/image/order.svg" alt="" />
+          </div>
+
+          <div className={styles['totalUser']}>
+            <div className={styles['titl']}>
+              Top 5 routes
+            </div>
+            <div className={styles['numk']}>
+              {top5Routes.map((route: RouteData, index: number) => (
+                <React.Fragment key={index}>
+                  <div className={styles['numk2']}>
+                    <div className={styles['numkDiv']}> Route   {route.route} </div> <div className={styles['numkDiv2']}> {route.total_passenger}</div>
+                  </div>
+                  <br />
+                </React.Fragment>
+              ))}
+            </div>
+            {/* <div className={styles['info']}>
+              <Image width={32} height={32} src="/image/down.svg" alt="" />
+              <div className={styles['txt']}>
+                <div className={styles['txt3']}>
+                  4.3%
+                </div>
+                <div className={styles['txt2']}>
+                  Down from yesterday
+                </div>
+              </div>
+            </div> */}
+            <Image className={styles['img']} width={80} height={80} src="/image/sale.svg" alt="" />
+          </div>
+
+
         </div>
         <div className={styles['details']}>
           <div className={styles['detailsDiv']}>
-            <div className={styles['detailsTit']}>
-              Sales Details
+            <div className={styles['detailsTitDiv']}>
+              <div className={styles['detailsTit']}>
+                Sales Details
+              </div>
+              <div>
+                <Dropdown.Button menu={busMenuProps}>
+                  {selectedBuses.length > 0 ? `Bus ${selectedBuses.join(', ')}` : 'Select Bus'}
+                </Dropdown.Button>
+
+              </div>
+              <div onClick={handleAll}>
+                <Button>Select All</Button>
+              </div>
             </div>
             <div className={styles['detailsTit1']}>
               <Button onClick={() => setShowAllData(false)}>1.5h</Button>
@@ -300,10 +360,6 @@ export default function Home() {
                     id: bus.bus_plate || '', // Ensure id is not undefined
                     color: isBusSelected(bus.bus_plate) ? colors[index] : '', // Use different color for selected/unselected buses
                   })) : []} // Provide an empty array if payload is null or undefined
-                  onClick={(e) => {
-                    const busPlate = e.id;
-                    toggleBusSelection(busPlate ?? ''); // Ensure busPlate is not undefined
-                  }} // Toggle bus selection on click
                 />
               </LineChart>
             </ResponsiveContainer>

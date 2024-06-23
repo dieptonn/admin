@@ -130,13 +130,24 @@
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
-                .detailsTit {
-                    color: #fff;
-                    // font-family: "Nunito Sans";
-                    font-size: 32px;
-                    font-style: normal;
-                    font-weight: 700;
-                    line-height: 26.667px; /* 83.333% */
+                box-sizing: border-box;
+                overflow: hidden;
+                .detailsTitDiv {
+                    display: flex;
+                    gap: 10%;
+                    align-items: center;
+                    width: 50%;
+                    .detailsTit {
+                        color: #fff;
+                        // font-family: "Nunito Sans";
+                        font-size: 32px;
+                        font-style: normal;
+                        font-weight: 700;
+                        line-height: 26.667px; /* 83.333% */
+                    }
+                    // .bus {
+                    //     background-color: white;
+                    // }
                 }
                 .detailsTit1 {
                     width: 20%;
@@ -154,6 +165,26 @@
                 // gap: 100%;
                 justify-content: space-between;
             }
+        }
+    }
+}
+
+.numk {
+    color: #fff;
+    line-height: 12px; /* 83.333% */
+    display: flex;
+    flex-direction: column;
+    .numk2 {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 36%;
+        .numkDiv {
+            display: flex;
+            flex-direction: row;
+        }
+        .numkDiv2 {
+            color: #00b69b;
         }
     }
 }
