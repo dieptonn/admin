@@ -287,7 +287,7 @@ export default function Home() {
               {top5Routes.map((route: RouteData, index: number) => (
                 <React.Fragment key={index}>
                   <div className={styles['numk2']}>
-                    <div className={styles['numkDiv']}> Route   {route.route} </div> <div className={styles['numkDiv2']}> {route.total_passenger}</div>
+                    <div className={styles['numkDiv']}> Route   {route.route} </div> <div className={styles['numkDiv2']}> {route.total_passenger} </div> <Image width={16} height={16} src="/image/team.svg" alt="" />
                   </div>
                   <br />
                 </React.Fragment>

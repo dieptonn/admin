@@ -9,6 +9,8 @@ import Link from 'next/link';
 export default function Sidebar() {
 
   const [selectedImage, setSelectedImage] = useState(null);
+  const [dropdown, setDropdown] = useState(false)
+
 
   const handleImageClick = (index: any) => {
     setSelectedImage(index); // Set selected image index
@@ -18,9 +20,9 @@ export default function Sidebar() {
     <div className={styles['Sidebar']}>
       <div className={styles['SidebarDiv']}>
         <Image width={32} height={32} src="/image/menu.svg" alt="" />
-        <Link href="/"><Image className={selectedImage === 0 ? styles.selectedImage : ''} onClick={() => handleImageClick(0)}
-          width={32} height={32} src="/image/dashboard.svg" alt="" /></Link>
-        <Image width={32} height={32} src="/image/product.svg" alt="" />
+        <div><Image className={selectedImage === 0 ? styles.selectedImage : ''} onClick={() => handleImageClick(0)}
+          width={32} height={32} src="/image/dashboard.svg" alt="" /></div>
+        <Link href="/"><Image width={32} height={32} src="/image/product.svg" alt="" /></Link>
         <Image width={32} height={32} src="/image/Favourites.svg" alt="" />
         <Link href="/feedback"><Image className={selectedImage === 0 ? styles.selectedImage : ''} onClick={() => handleImageClick(0)}
           width={32} height={32} src="/image/chat.svg" alt="" /></Link>

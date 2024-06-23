@@ -32,6 +32,108 @@
             border-radius: 14px;
             border: 1px solid #313d4f;
             background: #273142;
+            padding: 20px 20px 0px 20px;
+            .searchDiv {
+                width: 100%;
+                padding: 24px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 50px;
+                .search {
+                    width: 30%;
+                    height: 40px;
+                    border-radius: 20px;
+                    border: 0.6px solid rgba(207, 207, 207, 0.11);
+                    background: #323d4e;
+                    display: flex;
+                    flex-direction: row;
+                    padding: 10px;
+                    gap: 2%;
+                    .input {
+                        background: #323d4e;
+                        border: none; /* Bỏ viền */
+                        outline: none;
+                        color: #fff;
+                        width: 90%;
+                    }
+                }
+            }
+            .fb {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 0.3px solid rgba(198, 198, 198, 0.3);
+                padding: 10px;
+                .fbs {
+                    width: 100%;
+                    padding: 20px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    gap: 3%;
+                    .check {
+                        background: #273142;
+                    }
+                    .name {
+                        width: 18%;
+                        color: #fff;
+                        // font-family: "Nunito Sans";
+                        font-size: 22px;
+                        font-style: normal;
+                        font-weight: 700;
+                        line-height: normal;
+                    }
+                    .action {
+                        border-radius: 3px;
+                        background: #00b69b;
+                        text-align: center;
+                        padding: 3px 8px;
+                    }
+                    .action2 {
+                        border-radius: 3px;
+                        background: #fd9a56;
+                        text-align: center;
+                        padding: 3px 8px;
+                    }
+                    .action3 {
+                        border-radius: 3px;
+                        background: #7d3a89;
+                        text-align: center;
+                        padding: 3px 8px;
+                    }
+                    .action4 {
+                        border-radius: 3px;
+                        background: #3d369f;
+                        text-align: center;
+                        padding: 3px 8px;
+                    }
+                    .content {
+                        color: #fff;
+                        // font-family: "Nunito Sans";
+                        font-size: 22px;
+                        font-style: normal;
+                        font-weight: 600;
+                        line-height: normal;
+                        opacity: 0.8;
+                    }
+                }
+                .time {
+                    display: flex;
+                    flex-direction: row;
+                    color: #fff;
+                    // font-family: "Nunito Sans";
+                    font-size: 14px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: normal;
+                    opacity: 0.7;
+                    width: 5%;
+                }
+            }
         }
     }
 }
