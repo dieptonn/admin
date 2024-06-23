@@ -32,7 +32,7 @@ const Page = () => {
                                 Nguyễn Hoài Nam
                             </div>
                             <div className={styles['action']}>
-                                Tháng
+                                Feedback
                             </div>
                             <div className={styles['content']}>
                                 Trải nghiệm khá tệ, lơ xe đuổi tôi xuống vì tôi là lao công
@@ -50,7 +50,7 @@ const Page = () => {
                                 Ngô Công Thắng
                             </div>
                             <div className={styles['action2']}>
-                                Lượt
+                                Feedback
                             </div>
                             <div className={styles['content']}>
                                 Chất lượng tuyệt vời
@@ -68,7 +68,7 @@ const Page = () => {
                                 Hồ Viết Đạt
                             </div>
                             <div className={styles['action4']}>
-                                Quý
+                                Feedback
                             </div>
                             <div className={styles['content']}>
                                 Niềm nở với khách hàng, luôn chào hỏi, thật đáng tuyên dương
@@ -86,7 +86,7 @@ const Page = () => {
                                 Đỗ Duy Tiến
                             </div>
                             <div className={styles['action2']}>
-                                Lượt
+                                Feedback
                             </div>
                             <div className={styles['content']}>
                                 Dịch vụ tất tốt
@@ -104,7 +104,7 @@ const Page = () => {
                                 Nguyễn Thị Hải Hà
                             </div>
                             <div className={styles['action2']}>
-                                Lượt
+                                Feedback
                             </div>
                             <div className={styles['content']}>
                                 Chất lượng khá tệ, đông đúc không có chỗ ngồi
@@ -122,7 +122,7 @@ const Page = () => {
                                 Nguyễn Văn Lực
                             </div>
                             <div className={styles['action4']}>
-                                Quý
+                                Feedback
                             </div>
                             <div className={styles['content']}>
                                 Ghế bẩn không lau chùi
@@ -140,7 +140,7 @@ const Page = () => {
                                 Đông Nam Á
                             </div>
                             <div className={styles['action4']}>
-                                Quý
+                                Feedback
                             </div>
                             <div className={styles['content']}>
                                 Tài xế không có tính lịch sự với khách hàng
@@ -158,7 +158,7 @@ const Page = () => {
                                 Hoàng Việt Quách
                             </div>
                             <div className={styles['action4']}>
-                                Quý
+                                Feedback
                             </div>
                             <div className={styles['content']}>
                                 Tài xế rất chu đáo với người khuyết tật
@@ -176,7 +176,7 @@ const Page = () => {
                                 Đỗ Vũ Linh
                             </div>
                             <div className={styles['action']}>
-                                Tháng
+                                Feedback
                             </div>
                             <div className={styles['content']}>
                                 Điều hòa hỏng
@@ -194,7 +194,7 @@ const Page = () => {
                                 Nguyễn Quốc Đạt
                             </div>
                             <div className={styles['action']}>
-                                Tháng
+                                Feedback
                             </div>
                             <div className={styles['content']}>
                                 Đi quá nhanh, ảnh hưởng người đi đường
@@ -212,7 +212,7 @@ const Page = () => {
                                 Trần Vũ Tiến Công
                             </div>
                             <div className={styles['action2']}>
-                                Lượt
+                                Feedback
                             </div>
                             <div className={styles['content']}>
                                 Tài xế vươt đèn đỏ
