@@ -5,7 +5,12 @@
     left: 0;
     width: 4%;
     background: #273142;
-    height: 200vh;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    // gap: 30vh;
+    padding-bottom: 20px;
     .SidebarDiv {
         padding-top: 3vh;
         display: flex;
@@ -13,6 +18,35 @@
         gap: 2.5vh;
         align-items: center;
         flex-direction: column;
+        .drop {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            .dropdown {
+                max-height: 0px;
+                display: none;
+                width: 100%;
+                transition: max-height 1s ease;
+                overflow: hidden;
+                &.active {
+                    // display: block;
+                    max-height: 500px;
+                    display: flex;
+                    z-index: 1000;
+                    transition: max-height 1s ease;
+                    flex-direction: row;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 10px;
+                }
+                .icon {
+                    transition: transform 0.3s ease;
+                }
+            }
+        }
     }
     .logout {
         margin-top: 7vh;
@@ -23,6 +57,19 @@
     }
 }
 
-.selected {
-    background-color: #4379ee; /* Selected color */
+.selectedImage {
+    filter: invert(53%) sepia(15%) saturate(4373%) hue-rotate(121deg) brightness(95%) contrast(90%);
+    transition: transform 0.3s ease;
+}
+.selectedImage:hover {
+    transform: scale(1.2); /* Scale image to 1.5 times its size on hover */
+}
+.icon:hover {
+    transform: scale(1.2); /* Scale image to 1.5 times its size on hover */
+}
+.Logo {
+    transition: transform 0.3s ease;
+}
+.Logo:hover {
+    transform: scale(1.2); /* Scale image to 1.5 times its size on hover */
 }
